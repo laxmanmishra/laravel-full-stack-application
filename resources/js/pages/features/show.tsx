@@ -1,8 +1,10 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
+import { FormEvent } from 'react';
 
 interface Feature {
     id: number;
@@ -15,7 +17,7 @@ interface Feature {
 
 interface Comment {
     id: number;
-    content: string;
+    comment: string;
     created_at: string;
     user: {
         name: string;
@@ -28,6 +30,20 @@ interface ShowFeatureProps {
 }
 
 export default function ShowFeature({ feature, comments = [] }: ShowFeatureProps) {
+    const { auth } = usePage().props;
+    const canComment = auth?.user?.permissions?.includes('manage_comments') || false;
+    
+    const { data, setData, post, processing, errors } = useForm({
+        comment: '',
+    });
+
+    function submitComment(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        post(`/features/${feature.id}/comments`, {
+            onSuccess: () => setData('comment', ''),
+        });
+    }
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Features',
@@ -116,11 +132,41 @@ export default function ShowFeature({ feature, comments = [] }: ShowFeatureProps
                                                 ).toLocaleDateString()}
                                             </p>
                                             <p className="mt-2">
-                                                {comment.content}
+                                                {comment.comment}
                                             </p>
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+                        )}
+
+                        {canComment && (
+                            <div className="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
+                                <h2 className="text-lg font-semibold mb-4">
+                                    Add a Comment
+                                </h2>
+                                <form onSubmit={submitComment} className="space-y-4">
+                                    <Textarea
+                                        value={data.comment}
+                                        onChange={(e) =>
+                                            setData('comment', e.target.value)
+                                        }
+                                        placeholder="Write your comment..."
+                                        className="min-h-[100px] bg-background"
+                                        disabled={processing}
+                                    />
+                                    {errors.comment && (
+                                        <p className="text-xs text-destructive">
+                                            {errors.comment}
+                                        </p>
+                                    )}
+                                    <Button
+                                        type="submit"
+                                        disabled={processing || !data.comment.trim()}
+                                    >
+                                        {processing ? 'Posting...' : 'Post Comment'}
+                                    </Button>
+                                </form>
                             </div>
                         )}
                     </div>

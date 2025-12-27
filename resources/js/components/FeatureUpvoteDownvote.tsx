@@ -1,7 +1,10 @@
 import {Feature} from "@/types";
-import {useForm} from "@inertiajs/react";
+import {useForm, usePage} from "@inertiajs/react";
 
 export default function FeatureUpvoteDownvote({feature}: {feature: Feature}) {
+  const { auth } = usePage().props;
+  const canUpvote = auth?.user?.permissions?.includes('upvote_downvote') || false;
+
   const upvoteForm = useForm({
     upvote: true
   });
@@ -27,6 +30,15 @@ export default function FeatureUpvoteDownvote({feature}: {feature: Feature}) {
         preserveScroll: true
       })
     }
+  }
+
+  if (!canUpvote) {
+    return (
+      <div className="flex flex-col items-center">
+        <p className="text-sm text-gray-500">Upvoting not allowed</p>
+        <span className="text-2xl font-semibold">{feature.upvote_count}</span>
+      </div>
+    );
   }
 
   return (

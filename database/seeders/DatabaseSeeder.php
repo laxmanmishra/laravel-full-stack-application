@@ -36,7 +36,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $userRole->syncPermissions([$upvoteDownvotePermission]);
-        $commenterRole->syncPermissions([$upvoteDownvotePermission, $manageCommentsPermission]);
+        // Commenters should only be able to comment (not upvote)
+        $commenterRole->syncPermissions([$manageCommentsPermission]);
         $adminRole->syncPermissions([
             $upvoteDownvotePermission,
             $manageUsersPermission,

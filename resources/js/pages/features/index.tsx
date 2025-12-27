@@ -35,7 +35,7 @@ export default function FeaturesIndex({ features }: FeaturesIndexProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Features" />
             <div className="space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between px-5">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">
                             Features

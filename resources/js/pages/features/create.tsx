@@ -32,7 +32,7 @@ export default function CreateFeature() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Feature" />
-            <div className="space-y-6">
+            <div className="space-y-6 px-3 mt-3">
                 <div className="flex items-center gap-4">
                     <Link href="/features" prefetch>
                         <Button variant="ghost" size="icon">
