@@ -30,7 +30,7 @@ class UpvoteController extends Controller
             'upvote' => $data['upvote'],
         ]);
 
-        return to_route('features.show', $feature->id);
+        return to_route('feature.show', $feature->id);
     }
 
     public function destroy(Request $request, Feature $feature)
@@ -45,6 +45,6 @@ class UpvoteController extends Controller
             ->where('user_id', $user->id)
             ->delete();
 
-        return to_route('features.show', $feature->id);
+        return to_route('feature.show', $feature->id);
     }
 }

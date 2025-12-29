@@ -1,5 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head, useForm} from '@inertiajs/react';
+import AppLayout from '@/layouts/app-layout';import {Head, useForm} from '@inertiajs/react';
 import {User} from "@/types";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
@@ -42,7 +41,7 @@ export default function Show({roles, user, roleLabels}: {
   }
 
   return (
-    <AuthenticatedLayout
+    <AppLayout
       header={
         <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
           Edit User <b>"{user.name}"</b>
@@ -110,6 +109,6 @@ export default function Show({roles, user, roleLabels}: {
           </form>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </AppLayout>
   );
 }

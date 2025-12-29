@@ -20,7 +20,7 @@ export default function NewCommentForm({feature}: { feature: Feature }) {
   const createComment: FormEventHandler = (ev) => {
     ev.preventDefault();
 
-    post(route('comment.store', feature.id), {
+    post(route('comment.store', { feature: feature.id }), {
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => setData('comment', '')

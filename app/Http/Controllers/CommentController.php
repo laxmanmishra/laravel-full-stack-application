@@ -27,6 +27,6 @@ class CommentController extends Controller
             'comment' => $data['comment'],
         ]);
 
-        return to_route('features.show', $feature->id);
+        return to_route('feature.show', $feature->id);
     }
 }

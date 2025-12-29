@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('User/Index', [
+        return Inertia::render('user/index', [
             'users' => AuthUserResource::collection(User::all())->collection->toArray()
         ]);
     }
@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return Inertia::render('User/Edit', [
+        return Inertia::render('user/edit', [
             'user' => new AuthUserResource($user),
             'roles' => Role::all(),
             'roleLabels' => RolesEnum::labels()

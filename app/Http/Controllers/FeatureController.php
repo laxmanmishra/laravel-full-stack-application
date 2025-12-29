@@ -37,7 +37,7 @@ class FeatureController extends Controller
             ])
             ->paginate();
 
-        return Inertia::render('features/index', [
+        return Inertia::render('feature/index', [
             'features' => FeatureListResource::collection($paginated)
         ]);
     }
@@ -47,7 +47,7 @@ class FeatureController extends Controller
      */
     public function create()
     {
-        return Inertia::render('features/create');
+        return Inertia::render('feature/create');
     }
 
     /**
@@ -63,7 +63,7 @@ class FeatureController extends Controller
 
         Feature::create($data);
 
-        return to_route('features.index')->with('success', 'Feature created successfully.');
+        return to_route('feature.index')->with('success', 'Feature created successfully.');
     }
 
     /**
@@ -83,7 +83,7 @@ class FeatureController extends Controller
             ->where('upvote', 0)
             ->exists();
 
-        return Inertia::render('features/show', [
+        return Inertia::render('feature/show', [
             'feature' => new FeatureResource($feature),
             'comments' => Inertia::defer(function() use ($feature) {
                 return $feature->comments->map(function ($comment) {
@@ -103,19 +103,7 @@ class FeatureController extends Controller
      */
     public function edit(Feature $feature)
     {
-        $feature->upvote_count = Upvote::where('feature_id', $feature->id)
-            ->sum(DB::raw('CASE WHEN upvote = 1 THEN 1 ELSE -1 END'));
-
-        $feature->user_has_upvoted = Upvote::where('feature_id', $feature->id)
-            ->where('user_id', Auth::id())
-            ->where('upvote', 1)
-            ->exists();
-        $feature->user_has_downvoted = Upvote::where('feature_id', $feature->id)
-            ->where('user_id', Auth::id())
-            ->where('upvote', 0)
-            ->exists();
-
-        return Inertia::render('features/edit', [
+        return Inertia::render('feature/edit', [
             'feature' => new FeatureResource($feature)
         ]);
     }
@@ -132,7 +120,7 @@ class FeatureController extends Controller
 
         $feature->update($data);
 
-        return to_route('features.index')->with('success', 'Feature updated successfully.');
+        return to_route('feature.index')->with('success', 'Feature updated successfully.');
     }
 
     /**
@@ -142,6 +130,6 @@ class FeatureController extends Controller
     {
         $feature->delete();
 
-        return to_route('features.index')->with('success', 'Feature deleted successfully.');
+        return to_route('feature.index')->with('success', 'Feature deleted successfully.');
     }
 }

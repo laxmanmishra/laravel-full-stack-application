@@ -5,6 +5,8 @@ use App\Http\Resources\AuthUserResource;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tighten\Ziggy\Ziggy;
+
 
 class HandleInertiaRequests extends Middleware
 {
@@ -46,6 +48,11 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user ? new AuthUserResource($user) : null,
             ],
+            'ziggy' => fn () => [
+                ...(new Ziggy)->toArray(),
+                'location' => $request->url(),
+            ],
+            'success' => session('success'),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

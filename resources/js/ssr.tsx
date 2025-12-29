@@ -2,6 +2,8 @@ import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
+import { RouteName } from 'ziggy-js';
+import { route } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -16,7 +18,19 @@ createServer((page) =>
                 import.meta.glob('./pages/**/*.tsx'),
             ),
         setup: ({ App, props }) => {
+            /* eslint-disable */
+            // @ts-expect-error
+            global.route<RouteName> = (name, params, absolute) =>
+                route(name, params as any, absolute, {
+                    ...page.props.ziggy,
+                    location: new URL(page.props.ziggy.location),
+                });
+            /* eslint-enable */
+
             return <App {...props} />;
-        },
+        },    
+        // setup: ({ App, props }) => {
+        //     return <App {...props} />;
+        // },
     }),
 );

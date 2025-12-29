@@ -1,12 +1,21 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+// import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import AppLayout from '@/layouts/app-layout';
 import {Head, Link} from '@inertiajs/react';
 import {User, PageProps, PaginatedData} from "@/types";
 import {can} from "@/helpers";
+import { type BreadcrumbItem } from '@/types';
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Users',
+        href: '/users',
+    },
+];
+
 
 export default function Index({auth, users}: PageProps<{ users: User[] }>) {
 
   return (
-    <AuthenticatedLayout
+    <AppLayout breadcrumbs={breadcrumbs}
       header={
         <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
           Users
@@ -59,6 +68,6 @@ export default function Index({auth, users}: PageProps<{ users: User[] }>) {
           </tbody>
         </table>
       </div>
-    </AuthenticatedLayout>
+    </AppLayout>
   );
 }
